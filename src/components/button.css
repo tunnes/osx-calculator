@@ -22,6 +22,7 @@
   grid-column: span 2;
   text-align: left;
   padding-left: 24px;
+  border-color: #a1a1a1;
 }
 
 .button.triple {

@@ -17,6 +17,7 @@ export default class Calculator extends Component {
 
   constructor(props){
     super(props)
+    this.validOperation = this.validOperation.bind(this)
     this.getPercentage = this.getPercentage.bind(this)
     this.setOperation = this.setOperation.bind(this) 
     this.invertNumber = this.invertNumber.bind(this)
@@ -58,9 +59,21 @@ export default class Calculator extends Component {
     }
   }
 
+  validOperation() {
+    return(
+      !isNaN(this.state.firstNumber) &&
+      !isNaN(this.state.secondNumber) &&
+      ["/", "*", "+", "-"].includes(this.state.operation)
+    )
+  }
+
   getResult() {
-    const result = eval(`${this.state.firstNumber} ${this.state.operation} ${this.state.secondNumber}`)
-    this.setState({ ...initialState, displayValue: result, firstNumber: result })
+    if (this.validOperation()) {
+      const result = eval(`${this.state.firstNumber} ${this.state.operation} ${this.state.secondNumber}`)
+      this.setState({ ...initialState, displayValue: result, firstNumber: result })
+    } else {
+      this.clear()
+    }
   }
 
   invertNumber() {
@@ -69,7 +82,12 @@ export default class Calculator extends Component {
   }
 
   getPercentage() {
-    // return if this.state.operation != 'x'
+    if(this.state.operation === '*'){
+      const result = (parseFloat(this.state.firstNumber) / 100) * parseFloat(this.state.secondNumber)
+      this.setState({ ...initialState, displayValue: result, firstNumber: result })      
+    } else {
+      this.clear()
+    }
   }
 
   render() {
